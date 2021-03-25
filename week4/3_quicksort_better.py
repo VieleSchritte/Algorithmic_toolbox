@@ -1,22 +1,30 @@
 import sys
 
 
-def sorting(array):
-    array_set = set(array)
-    result = []
-    array_set = list(array_set)
-    array_set.sort()
-    for character in array_set:
-        for i in range(array.count(character)):
-            result.append(character)
-    return result
+def quickSort(array, left, right):
+    if left >= right:
+        return
+    mid = partition(array, left, right)
+    quickSort(array, left, mid)
+    quickSort(array, mid + 1, right)
+
+
+def partition(array, left, right):
+    pivot = array[left]
+    j = left
+    for i in range(left + 1, right):
+        if array[i] <= pivot:
+            j += 1
+            array[i], array[j] = array[j], array[i]
+    array[j], array[left] = array[left], array[j]
+    return j
 
 
 if __name__ == '__main__':
     raw_input = sys.stdin.read()
     array = list(map(int, raw_input.split()))[1:]
-    result = sorting(array)
-    result_str = ''
-    for character in result:
-        result_str += str(character) + ' '
-    print(result_str)
+    quickSort(array, 0, len(array))
+    str_result = ''
+    for character in array:
+        str_result += str(character) + ' '
+    print(str_result)
